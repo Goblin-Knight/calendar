@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Minimum Setup</title>
+	<link rel="stylesheet" href="css/bootstrap.min.css">   
+    <link rel="stylesheet" href="css/bootstrap-year-calendar.min.css">        
+</head>
+<body>
+
+    <div id="calendar"></div>
+
+    <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>   
+    <script type="text/javascript" src="js/bootstrap-year-calendar.min.js"></script>
+    <script type="text/javascript">
+        function editEvent(event) {
+    $('#event-modal input[name="event-index"]').val(event ? event.id : '');
+    $('#event-modal input[name="event-name"]').val(event ? event.name : '');
+    $('#event-modal input[name="event-location"]').val(event ? event.location : '');
+    $('#event-modal input[name="event-start-date"]').datepicker('update', event ? event.startDate : '');
+    $('#event-modal input[name="event-end-date"]').datepicker('update', event ? event.endDate : '');
+    $('#event-modal').modal();
+}
+
+function deleteEvent(event) {
+    var dataSource = $('#calendar').data('calendar').getDataSource();
+
+    for(var i in dataSource) {
+        if(dataSource[i].id == event.id) {
+            dataSource.splice(i, 1);
+            break;
+        }
+    }
+    
+    $('#calendar').data('calendar').setDataSource(dataSource);
+}
+
+function saveEvent() {
+    var event = {
+        id: $('#event-modal input[name="event-index"]').val(),
+        name: $('#event-modal input[name="event-name"]').val(),
+        location: $('#event-modal input[name="event-location"]').val(),
+        startDate: $('#event-modal input[name="event-start-date"]').datepicker('getDate'),
+        endDate: $('#event-modal input[name="event-end-date"]').datepicker('getDate')
+    }
+    
+    var dataSource = $('#calendar').data('calendar').getDataSource();
+
+    if(event.id) {
+        for(var i in dataSource) {
+            if(dataSource[i].id == event.id) {
+                dataSource[i].name = event.name;
+                dataSource[i].location = event.location;
+                dataSource[i].startDate = event.startDate;
+                dataSource[i].endDate = event.endDate;
+            }
+        }
+    }
+    else
+    {
+        var newId = 0;
+        for(var i in dataSource) {
+            if(dataSource[i].id > newId) {
+                newId = dataSource[i].id;
+            }
+        }
+        
+        newId++;
+        event.id = newId;
+    
+        dataSource.push(event);
+    }
+    
+    $('#calendar').data('calendar').setDataSource(dataSource);
+    $('#event-modal').modal('hide');
+}
+
+$(function() {
+    var currentYear = 2017;
+
+    $('#calendar').calendar({ 
+		disabledDays: [
+            new Date(currentYear,0,1),
+			new Date(currentYear,0,2),
+			new Date(currentYear,0,27),
+			new Date(currentYear,0,28),
+			new Date(currentYear,0,29),
+			new Date(currentYear,0,30),
+			new Date(currentYear,0,31),
+			new Date(currentYear,1,1),
+			new Date(currentYear,3,4),
+			new Date(currentYear,3,14),
+			new Date(currentYear,3,15),
+			new Date(currentYear,3,17),
+			new Date(currentYear,4,1),
+			new Date(currentYear,4,3),
+			new Date(currentYear,4,30),
+			new Date(currentYear,9,1),
+			new Date(currentYear,9,2),
+			new Date(currentYear,9,3),
+			new Date(currentYear,9,5),
+			new Date(currentYear,9,28),
+			new Date(currentYear,9,30),
+			new Date(currentYear,10,2),
+			new Date(currentYear,11,8),
+			new Date(currentYear,11,20),
+			new Date(currentYear,11,22),
+			new Date(currentYear,12,24),
+			new Date(currentYear,12,25),
+			new Date(currentYear,12,26)
+		],		
+        enableContextMenu: true,
+        enableRangeSelection: true,
+        contextMenuItems:[
+            {
+                text: 'Update',
+                click: editEvent
+            },
+            {
+                text: 'Delete',
+                click: deleteEvent
+            }
+        ],
+        selectRange: function(e) {
+            editEvent({ startDate: e.startDate, endDate: e.endDate });
+        },
+        mouseOnDay: function(e) {
+            if(e.events.length > 0) {
+                var content = '';
+                
+                for(var i in e.events) {
+                    content += '<div class="event-tooltip-content">'
+                                    + '<div class="event-name" style="color:' + e.events[i].color + '">' + e.events[i].name + '</div>'
+                                    + '<div class="event-location">' + e.events[i].location + '</div>'
+                                + '</div>';
+                }
+            
+                $(e.element).popover({ 
+                    trigger: 'manual',
+                    container: 'body',
+                    html:true,
+                    content: content
+                });
+                
+                $(e.element).popover('show');
+            }
+        },
+        mouseOutDay: function(e) {
+            if(e.events.length > 0) {
+                $(e.element).popover('hide');
+            }
+        },
+        dayContextMenu: function(e) {
+            $(e.element).popover('hide');
+        },
+        dataSource: [
+            {
+                id: 0,
+                name: '',
+                location: '',
+                startDate: new Date(currentYear, 0, 13),
+                endDate: new Date(currentYear, 0, 16)
+            },            
+			{
+                id: 1,
+                name: '',
+                location: '',
+                startDate: new Date(currentYear, 3, 3),
+                endDate: new Date(currentYear, 3, 3)
+            }, 
+			{
+                id: 2,
+                name: '',
+                location: '',
+                startDate: new Date(currentYear, 4, 2),
+                endDate: new Date(currentYear, 4, 5)
+            },
+			{
+                id: 3,
+                name: '',
+                location: '',
+                startDate: new Date(currentYear, 5, 21),
+                endDate: new Date(currentYear, 5, 27)
+            },
+			{
+                id: 4,
+                name: '',
+                location: '',
+                startDate: new Date(currentYear, 7, 14),
+                endDate: new Date(currentYear, 7, 18)
+            },
+			{
+                id: 5,
+                name: '',
+                location: '',
+                startDate: new Date(currentYear, 8, 11),
+                endDate: new Date(currentYear, 8, 22)
+            },
+			{
+                id: 6,
+                name: '',
+                location: '',
+                startDate: new Date(currentYear, 10, 1),
+                endDate: new Date(currentYear, 10, 3)
+            },
+			{
+                id: 7,
+                name: '',
+                location: '',
+                startDate: new Date(currentYear, 11, 4),
+                endDate: new Date(currentYear, 11, 7)
+            },
+        ]
+    });
+    
+    $('#save-event').click(function() {
+        saveEvent();
+    });
+});
+    </script>
+</body>
+</html>
