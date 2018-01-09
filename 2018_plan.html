@@ -20,10 +20,8 @@
     $('#event-modal input[name="event-end-date"]').datepicker('update', event ? event.endDate : '');
     $('#event-modal').modal();
 }
-
 function deleteEvent(event) {
     var dataSource = $('#calendar').data('calendar').getDataSource();
-
     for(var i in dataSource) {
         if(dataSource[i].id == event.id) {
             dataSource.splice(i, 1);
@@ -33,7 +31,6 @@ function deleteEvent(event) {
     
     $('#calendar').data('calendar').setDataSource(dataSource);
 }
-
 function saveEvent() {
     var event = {
         id: $('#event-modal input[name="event-index"]').val(),
@@ -44,7 +41,6 @@ function saveEvent() {
     }
     
     var dataSource = $('#calendar').data('calendar').getDataSource();
-
     if(event.id) {
         for(var i in dataSource) {
             if(dataSource[i].id == event.id) {
@@ -73,10 +69,8 @@ function saveEvent() {
     $('#calendar').data('calendar').setDataSource(dataSource);
     $('#event-modal').modal('hide');
 }
-
 $(function() {
     var currentYear = 2018;
-
     $('#calendar').calendar({ 
 		disabledDays: [
             new Date(currentYear,0,1),
@@ -163,8 +157,8 @@ $(function() {
                 id: 1,
                 name: '',
                 location: '',
-                startDate: new Date(currentYear, 5, 19),
-                endDate: new Date(currentYear, 5, 22)
+                startDate: new Date(currentYear, 6, 2),
+                endDate: new Date(currentYear, 6, 6)
             },
 			{
                 id: 2,
@@ -172,34 +166,13 @@ $(function() {
                 location: '',
                 startDate: new Date(currentYear, 7, 13),
                 endDate: new Date(currentYear, 7, 17)
-            },
-			{
-                id: 3,
-                name: '',
-                location: '',
-                startDate: new Date(currentYear, 9, 15),
-                endDate: new Date(currentYear, 9, 19)
-            },
-			{
-                id: 4,
-                name: '',
-                location: '',
-                startDate: new Date(currentYear, 11, 21),
-                endDate: new Date(currentYear, 11, 21)
-            },
-			{
-                id: 5,
-                name: '',
-                location: '',
-                startDate: new Date(currentYear, 11, 27),
-                endDate: new Date(currentYear, 11, 28)
-            },
+            },						
 			{
                 id: 6,
                 name: '',
                 location: '',
                 startDate: new Date(currentYear, 8, 24),
-                endDate: new Date(currentYear, 8, 24)
+                endDate: new Date(currentYear, 8, 28)
             },
 			{
                 id: 7,
@@ -207,6 +180,34 @@ $(function() {
                 location: '',
                 startDate: new Date(currentYear, 4, 21),
                 endDate: new Date(currentYear, 4, 25)
+            },
+			{
+                id: 8,
+                name: '',
+                location: '',
+                startDate: new Date(currentYear, 0, 29),
+                endDate: new Date(currentYear, 0, 29)
+            },
+			{
+                id: 9,
+                name: '',
+                location: '',
+                startDate: new Date(currentYear, 1, 26),
+                endDate: new Date(currentYear, 1, 26)
+            },
+			{
+                id: 10,
+                name: '',
+                location: '',
+                startDate: new Date(currentYear, 10, 19),
+                endDate: new Date(currentYear, 10, 23)
+            },
+			{
+                id: 11,
+                name: '',
+                location: '',
+                startDate: new Date(currentYear, 10, 26),
+                endDate: new Date(currentYear, 10, 30)
             },
         ]
     });
